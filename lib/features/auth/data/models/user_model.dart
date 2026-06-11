@@ -7,7 +7,6 @@ class UserModel extends UserEntity {
     required super.name,
     required super.email,
     super.photoUrl,
-    super.displayName,
     super.phoneNumber,
     required super.createdAt,
     super.lastLoginAt,
@@ -19,7 +18,6 @@ class UserModel extends UserEntity {
     return UserModel(
       uid: user.uid,
       name: user.displayName ?? "",
-      displayName: user.displayName,
       email: user.email ?? "",
       createdAt: user.metadata.creationTime ?? DateTime.now(),
       phoneNumber: user.phoneNumber,

@@ -13,13 +13,13 @@ class Validators {
 
   static String? username(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Name is required';
+      return 'username is required';
     }
     if (value.length < AppConstants.minNameLength) {
-      return 'Name must be atleast ${AppConstants.minNameLength}';
+      return 'username must be atleast ${AppConstants.minNameLength}';
     }
     if (value.length > AppConstants.maxNameLength) {
-      return 'Name must be atmost ${AppConstants.maxNameLength}';
+      return 'username must be atmost ${AppConstants.maxNameLength}';
     }
     return null;
   }

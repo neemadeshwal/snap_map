@@ -120,6 +120,16 @@ class AppColors {
   static const Color gradientStartDark = Color(0XFF003743);
   static const Color gradientEndDark = Color(0XFF2D899B);
 
+  static const Color trendingBgColor = Color(0XFFFFF1E6);
+  static const Color trendingTextColor = Color(0XFF9C4A00);
+  static const Color trendingborderColor = Color(0XFFF59038);
+  static const Color hourLeftBgColor = Color(0XFFE6F4F7);
+  static const Color hourLeftBorderColor = Color(0XFF4AACBF);
+  static const Color hourLeftTextColor = Color(0XFF004F61);
+
+  static const Color grayTextColor = Color(0XFF8A9FA3);
+  static const Color cardColor = Color(0XFFD4E6EA);
+
   // Background Gradients
   static const BoxDecoration backgroundGradient = BoxDecoration(
     gradient: LinearGradient(

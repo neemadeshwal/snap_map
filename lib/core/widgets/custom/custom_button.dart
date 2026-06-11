@@ -142,6 +142,8 @@ class CustomButton extends StatelessWidget {
     EdgeInsets? padding,
     Color? borderColor,
     double? borderWidth,
+    double? width,
+    double? height,
   }) {
     return CustomButton(
       text: null,
@@ -154,6 +156,8 @@ class CustomButton extends StatelessWidget {
       padding: padding,
       borderColor: borderColor,
       borderWidth: borderWidth,
+      width: width,
+      height: height,
     );
   }
 

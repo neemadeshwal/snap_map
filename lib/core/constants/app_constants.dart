@@ -36,4 +36,21 @@ class AppConstants {
   static const num maxNameLength = 20;
   static const num minPasswordLength = 7;
   static const num maxPasswordLength = 25;
+
+  static const String createYourProfile = "create your profile";
+  static const String userSetupContent =
+      "This is how others will discover you on the map";
+
+  static const String userName = "user name";
+  static const String displayName = "display name";
+  static const String bio = "bio";
+  static const String yourhandle = "yourhandle";
+  static const String howYourNameAppears = "how your name appears";
+  static const String bioHint = "tell people what you're about..";
+  static const String yourInterests = "your interests (pick a few)";
+  static const String yourLocation = "your location";
+  static const String save = "save";
+
+  static const String uploadUrl =
+      "https://api.cloudinary.com/v1_1/neema/image/upload";
 }

@@ -12,17 +12,17 @@ class CustomInput extends StatefulWidget {
   final String? helperText;
   final Widget? iconLeft;
   final Widget? iconRight;
+  final String? prefixText;
 
   // sizing
   final double? width;
   final double? height;
-  final EdgeInsets? contentPadding; // ✅ Better than separate h/v
+  final EdgeInsets? contentPadding;
 
   final double? borderRadius;
   final double? borderWidth;
 
   // styling
-
   final Color? bgColor;
   final Color? textColor;
   final Color? hintColor;
@@ -88,6 +88,7 @@ class CustomInput extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.textInputAction = TextInputAction.next,
     this.validator,
+    this.prefixText,
   });
 
   @override
@@ -121,16 +122,43 @@ class _CustomInput extends State<CustomInput> {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Detect if system/app is currently in dark mode
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    // 2. Dynamic Colors based on theme mode
+    final defaultBgColor = isDarkMode
+        ? Colors.grey[900]! // Dark theme background fill
+        : AppColors.inputBackground; // Light theme background fill
+
+    final defaultFocusedBgColor = isDarkMode ? Colors.black : Colors.white;
+
+    final defaultTextColor = isDarkMode ? Colors.white : Colors.black87;
+
+    final defaultHintColor = isDarkMode
+        ? Colors.grey[500]! // Clearer placeholder for dark mode
+        : AppColors.textPlaceholder;
+
+    final defaultLabelColor = isDarkMode
+        ? Colors.grey[300]!
+        : AppColors.textSecondary;
+
     return SizedBox(
       width: widget.width,
       height: widget.height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // Prevents layout issues when wrapped
         children: [
-          Text(widget.label.capitalize()),
+          Text(
+            widget.label.capitalize(),
+            style: TextStyle(
+              color: widget.labelColor ?? defaultLabelColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           SizedBox(height: AppDimensions.height12),
           TextFormField(
-            controller: widget.controller, // ✅ Essential
+            controller: widget.controller,
             focusNode: _focusNode,
             enabled: widget.enabled,
             readOnly: widget.readOnly,
@@ -139,7 +167,6 @@ class _CustomInput extends State<CustomInput> {
             textInputAction: widget.textInputAction,
             maxLines: widget.maxLines,
             maxLength: widget.maxLength,
-
             inputFormatters: widget.inputFormatters,
             textCapitalization: widget.textCapitalization,
             autofocus: widget.autoFocus,
@@ -147,31 +174,40 @@ class _CustomInput extends State<CustomInput> {
             onTap: widget.onTap,
             onFieldSubmitted: widget.onSubmitted,
             validator: widget.validator,
-
+            // Dynamic text styling inside input field
+            style: TextStyle(color: widget.textColor ?? defaultTextColor),
             decoration: InputDecoration(
+              prefixText: widget.prefixText,
+              prefixStyle: TextStyle(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w500,
+              ),
               filled: true,
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 40,
+                maxHeight: 40,
+              ),
+              suffixIconConstraints: const BoxConstraints(
+                minWidth: 40,
+                maxHeight: 40,
+              ),
               floatingLabelBehavior: FloatingLabelBehavior.never,
+              // Adapts background color based on focus state and theme mode
               fillColor: _isFocused
-                  ? (widget.bgColor ?? Colors.white)
-                  : (widget.bgColor ?? AppColors.inputBackground),
-              labelStyle: TextStyle(
-                color: _isFocused
-                    ? widget.labelColor ?? AppColors.textSecondary
-                    : widget.labelColor ?? AppColors.textPlaceholder,
-              ),
-              hintStyle: TextStyle(
-                color: widget.hintColor ?? AppColors.textPlaceholder,
-              ),
+                  ? (widget.bgColor ?? defaultFocusedBgColor)
+                  : (widget.bgColor ?? defaultBgColor),
+              hintStyle: TextStyle(color: widget.hintColor ?? defaultHintColor),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
                   widget.borderRadius ?? AppDimensions.radiusLG,
                 ),
                 borderSide: BorderSide(
-                  color: widget.borderColor ?? Colors.transparent,
+                  color:
+                      widget.borderColor ??
+                      (isDarkMode ? Colors.grey[800]! : Colors.transparent),
                   width: widget.borderWidth ?? 1.0,
                 ),
               ),
-
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
                   widget.borderRadius ?? AppDimensions.radiusLG,
@@ -190,7 +226,6 @@ class _CustomInput extends State<CustomInput> {
                   width: widget.borderWidth ?? 1.0,
                 ),
               ),
-
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
                   widget.borderRadius ?? AppDimensions.radiusLG,

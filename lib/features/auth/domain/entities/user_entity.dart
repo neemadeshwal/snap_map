@@ -4,7 +4,6 @@ class UserEntity extends Equatable {
   final String uid;
   final String name;
   final String email;
-  final String? displayName;
   final String? photoUrl;
   final String? phoneNumber;
   final DateTime createdAt;
@@ -14,7 +13,6 @@ class UserEntity extends Equatable {
     required this.uid,
     required this.name,
     required this.email,
-    required this.displayName,
     required this.phoneNumber,
     required this.photoUrl,
     required this.createdAt,
@@ -25,7 +23,6 @@ class UserEntity extends Equatable {
   List<Object?> get props => [
     uid,
     email,
-    displayName,
     name,
     phoneNumber,
     photoUrl,
@@ -36,7 +33,6 @@ class UserEntity extends Equatable {
   UserEntity copyWith({
     String? uid,
     String? email,
-    String? displayName,
     String? name,
     String? phoneNumber,
     String? photoUrl,
@@ -47,7 +43,6 @@ class UserEntity extends Equatable {
       uid: uid ?? this.uid,
       name: name ?? this.name,
       email: email ?? this.email,
-      displayName: displayName ?? this.displayName,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       photoUrl: photoUrl ?? this.photoUrl,
       createdAt: createdAt ?? this.createdAt,

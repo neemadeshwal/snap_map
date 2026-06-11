@@ -7,6 +7,7 @@ class UserSetupEntity extends Equatable {
   final String displayName;
   final List<String> interests;
   final String? profilePhoto;
+  final String? profileLocalPath;
   final String? bio;
   final LocationEntity location;
 
@@ -18,6 +19,7 @@ class UserSetupEntity extends Equatable {
     this.profilePhoto,
     this.bio,
     required this.location,
+    required this.profileLocalPath,
   });
 
   @override
@@ -39,6 +41,7 @@ class UserSetupEntity extends Equatable {
     String? profilePhoto,
     String? bio,
     LocationEntity? location,
+    String? profileLocalPath,
   }) {
     return UserSetupEntity(
       userId: userId ?? this.userId,
@@ -46,6 +49,7 @@ class UserSetupEntity extends Equatable {
       displayName: displayName ?? this.displayName,
       interests: interests ?? this.interests,
       location: location ?? this.location,
+      profileLocalPath: profileLocalPath ?? this.profileLocalPath,
     );
   }
 }

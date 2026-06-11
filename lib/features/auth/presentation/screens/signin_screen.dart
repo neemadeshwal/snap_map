@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snapmap/core/constants/app_constants.dart';
 import 'package:snapmap/core/constants/assets_constants.dart';
 import 'package:snapmap/core/constants/route_constants.dart';
 import 'package:snapmap/core/theme/app_colors.dart';
@@ -19,17 +18,18 @@ import 'package:snapmap/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:snapmap/features/auth/presentation/bloc/auth_event.dart';
 import 'package:snapmap/features/auth/presentation/bloc/auth_state.dart';
 import 'package:snapmap/features/auth/presentation/widgets/passwordToggle.dart';
+import 'package:snapmap/generated/app_localizations.dart'; // <-- Added import
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
 
   @override
-  State createState() => _SigninScreen();
+  State<SigninScreen> createState() => _SigninScreenState();
 }
 
-class _SigninScreen extends State<SigninScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _SigninScreenState extends State<SigninScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _showPassword = false;
 
@@ -45,7 +45,6 @@ class _SigninScreen extends State<SigninScreen> {
     final password = passwordController.text.trim();
 
     if (_formKey.currentState!.validate()) {
-      print(', email:$email, password:$password');
       context.read<AuthBloc>().add(
         SigninRequested(email: email, password: password),
       );
@@ -83,6 +82,10 @@ class _SigninScreen extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(
+      context,
+    )!; // <-- Initialized localizations
+
     return BlocConsumer<AuthBloc, AuthState>(
       listenWhen: (previous, current) =>
           current is Authenticated || current is AuthError,
@@ -96,7 +99,6 @@ class _SigninScreen extends State<SigninScreen> {
           );
         }
       },
-
       builder: (context, state) {
         final loading = state is AuthLoading;
         return Scaffold(
@@ -105,8 +107,8 @@ class _SigninScreen extends State<SigninScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
                     child: CommonBackButton(),
                   ),
                   Form(
@@ -120,22 +122,24 @@ class _SigninScreen extends State<SigninScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppConstants.welcomeBack.capitalize(),
+                            localizations.welcomeBack
+                                .capitalize(), // <-- Localized
                             style: AppTextStyles.titleLarge.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           SizedBox(height: AppDimensions.height4),
                           Text(
-                            AppConstants.loginContent.capitalize(),
+                            localizations.loginContent
+                                .capitalize(), // <-- Localized
                             style: AppTextStyles.titleMedium.copyWith(
                               color: AppColors.textSecondary,
                             ),
                           ),
                           SizedBox(height: AppDimensions.height24),
-
                           CustomButton(
-                            text: AppConstants.signinwithfacebook.capitalize(),
+                            text: localizations.signinWithFacebook
+                                .capitalize(), // <-- Localized
                             iconLeft: SvgPicture.asset(IconsConstants.fbIcon),
                             isFullWidth: true,
                             height: AppDimensions.buttonHeight2XL,
@@ -143,7 +147,7 @@ class _SigninScreen extends State<SigninScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    "This feature will be added later.",
+                                    "comming soon", // <-- Localized
                                   ),
                                   backgroundColor: Colors.indigoAccent,
                                 ),
@@ -152,11 +156,11 @@ class _SigninScreen extends State<SigninScreen> {
                           ),
                           SizedBox(height: AppDimensions.height24),
                           CustomButton.outlined(
-                            text: AppConstants.signinwithgoogle.capitalize(),
+                            text: localizations.signinWithGoogle
+                                .capitalize(), // <-- Localized
                             iconLeft: SvgPicture.asset(
                               IconsConstants.googleIcon,
                             ),
-
                             textColor: AppColors.primary,
                             isFullWidth: true,
                             height: AppDimensions.buttonHeight2XL,
@@ -165,24 +169,25 @@ class _SigninScreen extends State<SigninScreen> {
                           SizedBox(height: AppDimensions.height30),
                           Center(
                             child: Text(
-                              AppConstants.orsigninwithemail.toUpperCase(),
+                              localizations.orSigninWithEmail
+                                  .toUpperCase(), // <-- Localized
                               style: AppTextStyles.bodySmall.copyWith(
                                 color: AppColors.sidebarSubTitle,
                               ),
                             ),
                           ),
                           SizedBox(height: AppDimensions.height30),
-
                           CustomInput(
-                            label: AppConstants.emailAddress,
-                            hint: AppConstants.enterEmailaddress,
+                            label: localizations.emailAddress, // <-- Localized
+                            hint: localizations
+                                .enterEmailAddress, // <-- Localized
                             controller: emailController,
                             validator: Validators.email,
                           ),
                           SizedBox(height: AppDimensions.height12),
                           CustomInput(
-                            label: AppConstants.password,
-                            hint: AppConstants.enterPassword,
+                            label: localizations.password, // <-- Localized
+                            hint: localizations.enterPassword, // <-- Localized
                             obscureText: !_showPassword,
                             validator: Validators.password,
                             iconRight: Passwordtoggle(
@@ -199,40 +204,43 @@ class _SigninScreen extends State<SigninScreen> {
                             textColor: AppColors.primary,
                             width: 150,
                             size: ButtonSize.extrasmall,
-                            text: AppConstants.forgotPassword,
+                            text: localizations.forgotPassword, // <-- Localized
                             onPressed: () {
                               context.push(RouteConstants.forgotPassword);
                             },
                           ),
                           SizedBox(height: AppDimensions.height32),
                           CustomButton(
-                            text: AppConstants.logIn.capitalize(),
+                            text: localizations.logIn
+                                .capitalize(), // <-- Localized
                             onPressed: _handleSignIn,
                             isFullWidth: true,
                             height: AppDimensions.buttonHeight2XL,
                             isLoading: loading,
                           ),
                           SizedBox(height: AppDimensions.height32),
-
                           Center(
                             child: GestureDetector(
                               onTap: () => context.go(RouteConstants.signup),
                               child: RichText(
                                 text: TextSpan(
                                   style: AppTextStyles.bodyMedium.copyWith(
-                                    color: AppColors.textPrimary,
+                                    color:
+                                        Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? AppColors.textPlaceholderDark
+                                        : AppColors.textPrimary,
                                   ),
                                   children: [
                                     TextSpan(
                                       text:
-                                          '${AppConstants.dontHaveAnAccount.capitalize()} ',
+                                          '${localizations.dontHaveAnAccount.capitalize()} ', // <-- Localized
                                     ),
                                     TextSpan(
-                                      text: AppConstants.create
-                                          .capitalizeWords(),
-                                      style: TextStyle(
-                                        color: AppColors
-                                            .primary, // ✅ Different color
+                                      text: localizations.create
+                                          .capitalizeWords(), // <-- Localized
+                                      style: const TextStyle(
+                                        color: AppColors.primary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
